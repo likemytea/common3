@@ -11,6 +11,8 @@ import java.util.concurrent.locks.ReentrantLock;
 public class PrimarykeyGenerated {
 	// 自增随机数初始值 ---myRandomMin和myRandomMax控制集群情况下主键重复的异常：即：不同server，位于不同的区间。
 	private static int myRandom = 0;
+	// 上一次访问产生的时间
+	private static long lasttime = 0l;
 	// 服务器标志
 	public static String serverIdentity = "";
 	private static Lock lock = new ReentrantLock();
@@ -52,6 +54,7 @@ public class PrimarykeyGenerated {
 	 * 
 	 * */
 	public static String generateId(boolean localDiff) {
+		checkIfClockBack();
 		DateFormat format = new SimpleDateFormat("yyMMddHHmmss");
 		StringBuffer sb = new StringBuffer(format.format(new Date().getTime()));
 		sb.append(getMyRandom());
@@ -61,7 +64,16 @@ public class PrimarykeyGenerated {
 		return sb.toString();
 	}
 	/*********** 优化后的程序 end **********************************/
-
+	/**
+	 * check是否时钟回退
+	 */
+	private static void checkIfClockBack() {
+		long time = System.currentTimeMillis();
+		if (time < lasttime) {
+			throw new RuntimeException("时钟回退异常");
+		}
+		lasttime = time;
+	}
 	public static void main(String[] args) {
 		for (int i = 0; i <= 10000; i++) {
 			generateId(false);
