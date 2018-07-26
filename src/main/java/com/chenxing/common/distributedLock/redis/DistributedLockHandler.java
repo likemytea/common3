@@ -13,9 +13,6 @@ import org.springframework.util.StringUtils;
 
 @Component
 public class DistributedLockHandler {
-	public DistributedLockHandler(RedisTemplate<String, Object> redisTemplate) {
-		this.redisTemplate = redisTemplate;
-	}
 	private static final Logger logger = LoggerFactory.getLogger(DistributedLockHandler.class);
 	private final static long LOCK_EXPIRE = 19 * 1000L;// 单个业务持有锁的时间19s，防止死锁
 	private final static long LOCK_TRY_INTERVAL = 50L;// 默认50ms尝试一次
