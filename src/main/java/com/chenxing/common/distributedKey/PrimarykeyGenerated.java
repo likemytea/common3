@@ -13,7 +13,7 @@ public class PrimarykeyGenerated {
 	private static int myRandom = 0;
 	// 上一次访问产生的时间
 	private static long lasttime = 0l;
-	// 服务器标志
+	// 服务器标志,要求是整数，首位补零
 	public static String serverIdentity = "";
 	private static Lock lock = new ReentrantLock();
 
@@ -75,14 +75,17 @@ public class PrimarykeyGenerated {
 		lasttime = time;
 	}
 	public static void main(String[] args) {
-		for (int i = 0; i <= 10000; i++) {
+		long start = System.currentTimeMillis();
+
+
+		for (int i = 0; i <= 100; i++) {
 			generateId(false);
-			if (i == 10000) {
+			if (i == 100) {
 				System.out.println(generateId(false));
 			}
 
 		}
-		System.out.println("wanbi");
-		System.exit(0);
+		long end = System.currentTimeMillis();
+		System.out.println("cost:" + String.valueOf(end - start));
 	}
 }
