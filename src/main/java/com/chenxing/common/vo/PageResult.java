@@ -11,24 +11,24 @@ import java.util.List;
 public class PageResult<T> implements Serializable {
 
 	private static final long serialVersionUID = 8306644012173689576L;
-	private int totalCount;
-	private int totalPage;
+	private long totalCount;
+	private long totalPage;
 
 	private List<T> array;
 
-	public int getTotalCount() {
+	public long getTotalCount() {
 		return totalCount;
 	}
 
-	public void setTotalCount(int totalCount) {
+	public void setTotalCount(long totalCount) {
 		this.totalCount = totalCount;
 	}
 
-	public void setTotalPage(int totalPage) {
+	public void setTotalPage(long totalPage) {
 		this.totalPage = totalPage;
 	}
 
-	public int getTotalPage() {
+	public long getTotalPage() {
 		return totalPage;
 	}
 
