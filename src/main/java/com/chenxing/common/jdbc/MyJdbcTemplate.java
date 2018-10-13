@@ -50,8 +50,8 @@ public class MyJdbcTemplate extends JdbcTemplate {
 	 */
 	private Pagination assemblePaging(int _currentpage, int _pagesize, String _sortBy, SortType _sortType) {
 		Pagination pagination = new Pagination();
-		pagination.setCurrentPage(_currentpage);
-		pagination.setPageSize(_pagesize);
+		pagination.setCurrentPage(_currentpage == 0 ? 1 : _currentpage);
+		pagination.setPageSize(_pagesize == 0 ? 10 : _pagesize);
 		SortBy sortBy = null;
 		try {
 			sortBy = new SortBy(_sortBy, 1, _sortType);
