@@ -7,10 +7,14 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.RowMapperResultSetExtractor;
 
 import com.chenxing.common.pagination.IllegalArgumentException;
 import com.chenxing.common.pagination.Pagination;
@@ -23,6 +27,7 @@ import com.chenxing.common.pagination.SortType;
  * Created by liuxing on 2018/8/17.
  */
 public class MyJdbcTemplate extends JdbcTemplate {
+	private final Logger log = LoggerFactory.getLogger(this.getClass());
 	public MyJdbcTemplate() {
 	}
 
@@ -44,6 +49,17 @@ public class MyJdbcTemplate extends JdbcTemplate {
 		}, rowMapper);
 	}
 
+	public <T> T queryForObject(String sql, RowMapper<T> rowMapper, Object... args) throws DataAccessException {
+		try {
+			super.queryForObject(sql, rowMapper, args);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			return null;
+		}
+
+		List<T> results = query(sql, args, new RowMapperResultSetExtractor<T>(rowMapper, 1));
+		return DataAccessUtils.requiredSingleResult(results);
+	}
 	/**
 	 * 组装分页及排序对象
 	 * 
